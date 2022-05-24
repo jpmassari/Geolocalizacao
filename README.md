@@ -2,7 +2,9 @@
 
 Detalhes:
 .yarn install
-.Muito provavelmente o emulador android não irá funcionar, então use a versão web ou um device fisico.
+.
+Muito provavelmente o emulador android não irá funcionar, então use a versão web ou um device fisico.
+
 .Se necessário habilitar cors.
 
 .pacote é adicionado a lista somente quando o dispositivo falha em se comunicar com o servidor.
