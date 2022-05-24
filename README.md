@@ -2,11 +2,11 @@
 
 Detalhes:
 
-.yarn install
+.yarn install para baixar as dependências e yarn start --web para rodar o projeto.
 
-.Muito provavelmente o emulador android não irá funcionar, então use a versão web ou um device fisico.
+.Muito provavelmente o emulador android não receberá os valores da geolocalização, então use a versão web ou um device fisico.
 
-.Se necessário habilitar cors.
+.Se necessário habilitar cors no back.
 
 .pacote é adicionado a lista somente quando o dispositivo falha em se comunicar com o servidor.
 
