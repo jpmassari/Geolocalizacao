@@ -1,9 +1,10 @@
 # JoaoPedroMassari-test-ReactNative
 
 Detalhes:
+
 .yarn install
-.
-Muito provavelmente o emulador android não irá funcionar, então use a versão web ou um device fisico.
+
+.Muito provavelmente o emulador android não irá funcionar, então use a versão web ou um device fisico.
 
 .Se necessário habilitar cors.
 
