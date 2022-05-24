@@ -23,7 +23,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "jsEngine": "hermes",
+      "permissions": ["LOCATION"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
