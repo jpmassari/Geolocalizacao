@@ -3,7 +3,6 @@ import React, { useState, useEffect, } from 'react';
 import styled from 'styled-components/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Location from 'expo-location';
-import { useMutation, useQueryClient, dehydrate, hydrate } from 'react-query';
 
 import { HomeTab } from './HomeTab/HomeTab';
 import { StatusTab } from './StatusTab/StatusTab';
@@ -37,51 +36,14 @@ const ButtonText = styled.Text`
   color: #fff;
 `;
 
-const createPackage = async ( position ) => {
-  const data  = await fetch(`http://localhost:8080/points/${position.id}`, {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      id: position.id,
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-      speed: position.coords.speed,
-      time: position.timestamp
-    })
-  });
-  return data;
-};
-
 export const Tabs = () => { 
   const Stack = createStackNavigator();
   const [ errorMsg, setErrorMsg ] = useState(null); 
   const [ position, setPosition ] = useState([]);
   const { dispatch, packages } = useStatusReducer();
-  const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useMutation(createPackage, {
-    onSuccess: (data, variables, context) => {
-      const message = "success";
-      console.log(message);
-    },
-    onError: (data, variables, context) => {
-      setPosition(prevState => [ ...prevState, variables ]);
-      console.log('error');
-    },
-    onSettled: (data, variables, context) => {
-      queryClient.invalidateQueries('create');
-    }
-  }); 
-
-  const onSubmit = ( data ) => {
-    mutate(data);
-  };
   useEffect(() => {
-   (async () => {
+   const requestLocationPermission = async () => {
       Location.setGoogleApiKey('AIzaSyA1jDYY6DHaaTg3Je_vv98b5s2_Ram_8eU');
       await Location.requestForegroundPermissionsAsync();
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -90,22 +52,28 @@ export const Tabs = () => {
         setErrorMsg('Permission to access location was denied');
         return;
       }
-  
-      const locationInterval = setInterval(async () => {
-        let position = await Location.getCurrentPositionAsync({});
-        position.id = uuid();
-        onSubmit(position) 
-      }, 5000);
-      return () => clearInterval(locationInterval);
-      
-    })();
+    }
+    requestLocationPermission();
   },[]);
+
   useEffect(() => {
-    const state = dehydrate(queryClient)
-    hydrate(queryClient, state)
-    queryClient.resumePausedMutations()
+    const locationInterval = setInterval(async () => {
+      let position = await Location.getCurrentPositionAsync({});
+      const normalize = {
+        id: uuid(),
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        speed: position.coords.speed,
+        time: position.timestamp
+      }
+      console.log(normalize);
+      setPosition(prevState => [ ...prevState, normalize ]);
+    }, 5000);
+    return () => clearInterval(locationInterval);
+  })
+  useEffect(() => {
     dispatch({ type: 'load-packages', payload: position });
-    console.log(state);
+    console.log(position);
   },[position])
 
   return (

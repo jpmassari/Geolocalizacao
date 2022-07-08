@@ -37,7 +37,7 @@ const List = ({ p }) => {
     <ListContainer>
       <Label>Pacote ID: {p.id}</Label> 
       <Label fontSize={16} margin={5} >Pendente a sincronizar</Label> 
-      {Object.entries(p.coords).map((c,i)=> (
+      {Object.entries(p).map((c,i)=> (
         <CoordsLabel key={i}>{c[0]} : {c[1]}</CoordsLabel>
       ))}
       <DivisorLine/>
@@ -50,8 +50,7 @@ export const PackagesList = () => {
   return (
     <Content>
       <DivisorLine />
-
-      {packages.map((p,i) => (
+      {packages.length > 0 && packages.map((p,i) => (
           <List key={i} p={p} />
       ))} 
     </Content>
