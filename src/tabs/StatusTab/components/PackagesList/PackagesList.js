@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text} from 'react-native';
+import React, { useContext } from 'react';
 import styled from 'styled-components/native';
-import { ScrollableScreenContainer } from '../../../../ui-components/ScreenContainer/ScreenContainer'
 import { LayoutPadding } from '../../../../ui-components/LayoutPadding/LayoutPadding';
 import { StatusContext } from '../../../../contexts/status-context';
 
